@@ -26,6 +26,14 @@ async function loadLocalEnv() {
 
 const localEnv = await loadLocalEnv();
 const publicEnv = (name: string, fallback = "") => process.env[name] ?? localEnv[name] ?? fallback;
+const supabaseUrl = publicEnv("BUN_PUBLIC_SUPABASE_URL");
+const supabaseKey = publicEnv("BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error(
+    "Missing BUN_PUBLIC_SUPABASE_URL or BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY. " +
+      "Add both variables to Vercel and run the build again.",
+  );
+}
 const outdir = path.join(process.cwd(), "dist");
 await rm(outdir, { recursive: true, force: true });
 
@@ -49,13 +57,14 @@ for (const output of result.outputs) {
 }
 
 const indexPath = path.join(outdir, "index.html");
-const indexHtml = await readFile(indexPath, "utf8");
+let indexHtml = await readFile(indexPath, "utf8");
 const runtimeConfig = JSON.stringify({
-  BUN_PUBLIC_SUPABASE_URL: publicEnv("BUN_PUBLIC_SUPABASE_URL"),
-  BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publicEnv("BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY"),
+  BUN_PUBLIC_SUPABASE_URL: supabaseUrl,
+  BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY: supabaseKey,
   BUN_PUBLIC_BACKEND_URL: publicEnv("BUN_PUBLIC_BACKEND_URL", "http://localhost:3000"),
 });
-await writeFile(
-  indexPath,
-  indexHtml.replace("<head>", `<head><script>globalThis.__WITTY_ENV__=${runtimeConfig};</script>`),
+indexHtml = indexHtml.replace(
+  "<head>",
+  `<head><script>globalThis.__WITTY_ENV__=${runtimeConfig};</script>`,
 );
+await writeFile(indexPath, indexHtml.replace("<title>Bun + React</title>", "<title>Witty</title>"));

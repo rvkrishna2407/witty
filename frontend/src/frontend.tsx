@@ -10,11 +10,19 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 
 const elem = document.getElementById("root")!;
-const app = (
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const runtimeEnv = (globalThis as typeof globalThis & {
+  __WITTY_ENV__?: Record<string, string | undefined>;
+}).__WITTY_ENV__;
 
-const root = createRoot(elem);
-root.render(app);
+if (!runtimeEnv?.BUN_PUBLIC_SUPABASE_URL || !runtimeEnv.BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+  elem.textContent = "Frontend configuration is missing. Add the Supabase variables in Vercel.";
+} else {
+  const app = (
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+
+  const root = createRoot(elem);
+  root.render(app);
+}

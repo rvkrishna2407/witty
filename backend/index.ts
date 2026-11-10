@@ -14,6 +14,10 @@ app.use(cors({
     origin: "*",
     exposedHeaders: ["X-Conversation-Id"],
 }));
+app.use((_req, res, next) => {
+    res.setHeader("Access-Control-Allow-Private-Network", "true");
+    next();
+});
 
 const client = tavily({ apiKey: process.env.TAVILY_API_KEY });
 const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
