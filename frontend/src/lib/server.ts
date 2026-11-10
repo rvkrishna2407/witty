@@ -1,11 +1,15 @@
 import { createServerClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr'
 
+const env = (import.meta as ImportMeta & {
+  env?: Record<string, string | undefined>;
+}).env ?? {};
+
 export function createClient(request: Request) {
   const headers = new Headers()
 
   const supabase = createServerClient(
-    process.env.VITE_SUPABASE_URL!,
-    process.env.VITE_SUPABASE_PUBLISHABLE_KEY!,
+    env.BUN_PUBLIC_SUPABASE_URL ?? "",
+    env.BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
     {
       cookies: {
         getAll() {

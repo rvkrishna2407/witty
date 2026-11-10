@@ -1,7 +1,12 @@
 import { serve } from "bun";
 import index from "./index.html";
 
+const env = (import.meta as ImportMeta & {
+  env?: Record<string, string | undefined>;
+}).env ?? {};
+
 const server = serve({
+  port: 3002,
   routes: {
     // Serve index.html for all unmatched routes.
     "/*": index,
@@ -29,7 +34,7 @@ const server = serve({
     },
   },
 
-  development: process.env.NODE_ENV !== "production" && {
+  development: env.NODE_ENV !== "production" && {
     // Enable browser hot reloading in development
     hmr: true,
 

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --hot src/index.html",
-    "start": "bun src/index.html",
+    "dev": "bun run build && bun --hot dist/index.html --port 3002",
+    "start": "bun run build && bun dist/index.html --port 3002",
     "build": "bun run build.ts"
   },
   "dependencies": {

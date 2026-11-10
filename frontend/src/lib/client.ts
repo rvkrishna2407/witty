@@ -1,8 +1,12 @@
 import { createBrowserClient } from '@supabase/ssr'
 
+const env = (import.meta as ImportMeta & {
+  env?: Record<string, string | undefined>;
+}).env ?? {};
+
 export function createClient() {
   return createBrowserClient(
-    process.env.BUN_PUBLIC_SUPABASE_URL!,
-    process.env.BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+    env.BUN_PUBLIC_SUPABASE_URL ?? "",
+    env.BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? ""
   )
 }

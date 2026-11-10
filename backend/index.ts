@@ -10,11 +10,8 @@ import { PROMPT_TEMPLATE, SYSTEM_PROMPT } from "./prompt";
 
 const app = express();
 app.use(express.json({ limit: "14mb" }));
-const allowedOrigins = process.env.FRONTEND_URL
-    ? process.env.FRONTEND_URL.split(",").map((origin) => origin.trim()).filter(Boolean)
-    : ["http://localhost:3000", "http://localhost:3001"];
 app.use(cors({
-    origin: allowedOrigins,
+    origin: "*",
     exposedHeaders: ["X-Conversation-Id"],
 }));
 
