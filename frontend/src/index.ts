@@ -1,10 +1,6 @@
 import { serve } from "bun";
 import index from "./index.html";
 
-const env = (import.meta as ImportMeta & {
-  env?: Record<string, string | undefined>;
-}).env ?? {};
-
 const server = serve({
   port: 3002,
   routes: {
@@ -34,7 +30,7 @@ const server = serve({
     },
   },
 
-  development: env.NODE_ENV !== "production" && {
+  development: {
     // Enable browser hot reloading in development
     hmr: true,
 

@@ -1,5 +1,5 @@
-const env = (import.meta as ImportMeta & {
-    env?: Record<string, string | undefined>;
-}).env ?? {};
+const runtimeEnv = (globalThis as typeof globalThis & {
+    __WITTY_ENV__?: Record<string, string | undefined>;
+}).__WITTY_ENV__ ?? {};
 
-export const BACKEND_URL = env.BUN_PUBLIC_BACKEND_URL ?? "http://localhost:3000";
+export const BACKEND_URL = runtimeEnv.BUN_PUBLIC_BACKEND_URL ?? "http://localhost:3000";

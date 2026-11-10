@@ -1,5 +1,5 @@
 import tailwind from "bun-plugin-tailwind";
-import { rm } from "node:fs/promises";
+import { rm, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 async function loadLocalEnv() {
@@ -40,12 +40,6 @@ const result = await Bun.build({
   sourcemap: "linked",
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
-    "import.meta.env": JSON.stringify({
-      NODE_ENV: "production",
-      BUN_PUBLIC_SUPABASE_URL: publicEnv("BUN_PUBLIC_SUPABASE_URL"),
-      BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publicEnv("BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY"),
-      BUN_PUBLIC_BACKEND_URL: publicEnv("BUN_PUBLIC_BACKEND_URL", "http://localhost:3000"),
-    }),
     "process.env.npm_package_name": JSON.stringify("witty-frontend"),
   },
 });
@@ -53,3 +47,15 @@ const result = await Bun.build({
 for (const output of result.outputs) {
   console.log(` ${path.relative(process.cwd(), output.path)}  ${(output.size / 1024).toFixed(1)} KB`);
 }
+
+const indexPath = path.join(outdir, "index.html");
+const indexHtml = await readFile(indexPath, "utf8");
+const runtimeConfig = JSON.stringify({
+  BUN_PUBLIC_SUPABASE_URL: publicEnv("BUN_PUBLIC_SUPABASE_URL"),
+  BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publicEnv("BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY"),
+  BUN_PUBLIC_BACKEND_URL: publicEnv("BUN_PUBLIC_BACKEND_URL", "http://localhost:3000"),
+});
+await writeFile(
+  indexPath,
+  indexHtml.replace("<head>", `<head><script>globalThis.__WITTY_ENV__=${runtimeConfig};</script>`),
+);
