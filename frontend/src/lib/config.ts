@@ -1,0 +1,1 @@
+export const BACKEND_URL = process.env.BUN_PUBLIC_BACKEND_URL ?? "http://localhost:3000";
