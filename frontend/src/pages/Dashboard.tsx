@@ -323,6 +323,12 @@ export default function Dashboard() {
         navigate("/auth");
     }
 
+    function closeSidebarOnMobile() {
+        if (window.matchMedia("(max-width: 700px)").matches) {
+            setSidebarOpen(false);
+        }
+    }
+
     return (
         <main className="app-shell">
             {sidebarOpen && <button className="sidebar-backdrop" aria-label="Close conversations" onClick={() => setSidebarOpen(false)} />}
@@ -336,14 +342,14 @@ export default function Dashboard() {
                 <button className="new-chat" onClick={() => {
                     setConversationId(undefined);
                     setMessages([]);
-                    setSidebarOpen(false);
+                    closeSidebarOnMobile();
                 }}>+ New conversation</button>
                 <h2>Conversations</h2>
                 <div className="conversation-list">
                     {conversations.map((conversation) => (
                         <button key={conversation.id} onClick={() => {
                             openConversation(conversation.id);
-                            setSidebarOpen(false);
+                            closeSidebarOnMobile();
                         }}>
                             {conversation.title ?? "Untitled conversation"}
                         </button>
