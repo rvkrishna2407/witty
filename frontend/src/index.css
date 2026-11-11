@@ -73,7 +73,7 @@ button {
 }
 
 .sidebar-close {
-  display: block;
+  display: none;
 }
 
 .chat-area {
@@ -711,22 +711,8 @@ button {
   }
 
   @media (min-width: 701px) {
-    .sidebar:not(.sidebar-open) {
-      width: 0;
-      flex-basis: 0;
-      padding-right: 0;
-      padding-left: 0;
-      overflow: hidden;
-      border-right: 0;
-    }
-
-    .sidebar:not(.sidebar-open) + .chat-area {
-      max-width: none;
-    }
-
     .chat-area > .sidebar-toggle {
-      top: 20px;
-      left: 20px;
+      display: none;
     }
   }
 

@@ -329,7 +329,7 @@ export default function Dashboard() {
             <aside className={`sidebar${sidebarOpen ? " sidebar-open" : ""}`}>
                 <div className="sidebar-header">
                     <div className="brand"><span>&lt;/&gt;</span> Witty</div>
-                    <button className="sidebar-toggle sidebar-close" type="button" aria-label="Close conversations" title="Close conversations" onClick={() => setSidebarOpen((open) => !open)}>
+                    <button className="sidebar-toggle sidebar-close" type="button" aria-label="Close conversations" onClick={() => setSidebarOpen(false)}>
                         ☰
                     </button>
                 </div>
