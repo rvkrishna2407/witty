@@ -183,7 +183,9 @@ export default function Dashboard() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(() => (
+        typeof window === "undefined" || !window.matchMedia("(max-width: 700px)").matches
+    ));
     const imageInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -325,7 +327,12 @@ export default function Dashboard() {
         <main className="app-shell">
             {sidebarOpen && <button className="sidebar-backdrop" aria-label="Close conversations" onClick={() => setSidebarOpen(false)} />}
             <aside className={`sidebar${sidebarOpen ? " sidebar-open" : ""}`}>
-                <div className="brand"><span>&lt;/&gt;</span> Witty</div>
+                <div className="sidebar-header">
+                    <div className="brand"><span>&lt;/&gt;</span> Witty</div>
+                    <button className="sidebar-toggle sidebar-close" type="button" aria-label="Close conversations" onClick={() => setSidebarOpen(false)}>
+                        ☰
+                    </button>
+                </div>
                 <button className="new-chat" onClick={() => {
                     setConversationId(undefined);
                     setMessages([]);
@@ -361,9 +368,11 @@ export default function Dashboard() {
             </aside>
 
             <section className="chat-area">
-                <button className="sidebar-toggle" type="button" aria-label="Open conversations" onClick={() => setSidebarOpen(true)}>
-                    ☰
-                </button>
+                {!sidebarOpen && (
+                    <button className="sidebar-toggle" type="button" aria-label="Open conversations" onClick={() => setSidebarOpen(true)}>
+                        ☰
+                    </button>
+                )}
                 <div className="chat-content">
                     {messages.length === 0 && !loading && <div className="welcome">
                         <div className="welcome-mark">&lt;/&gt;</div>
