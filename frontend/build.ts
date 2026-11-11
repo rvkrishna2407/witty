@@ -26,11 +26,11 @@ async function loadLocalEnv() {
 
 const localEnv = await loadLocalEnv();
 const publicEnv = (name: string, fallback = "") => process.env[name] ?? localEnv[name] ?? fallback;
-const supabaseUrl = publicEnv("BUN_PUBLIC_SUPABASE_URL");
-const supabaseKey = publicEnv("BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+const supabaseUrl = publicEnv("BUN_PUBLIC_VITE_SUPABASE_URL");
+const supabaseKey = publicEnv("BUN_PUBLIC_VITE_SUPABASE_PUBLISHABLE_KEY");
 if (!supabaseUrl || !supabaseKey) {
   throw new Error(
-    "Missing BUN_PUBLIC_SUPABASE_URL or BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY. " +
+    "Missing BUN_PUBLIC_VITE_SUPABASE_URL or BUN_PUBLIC_VITE_SUPABASE_PUBLISHABLE_KEY. " +
       "Add both variables to Vercel and run the build again.",
   );
 }
@@ -59,8 +59,8 @@ for (const output of result.outputs) {
 const indexPath = path.join(outdir, "index.html");
 let indexHtml = await readFile(indexPath, "utf8");
 const runtimeConfig = JSON.stringify({
-  BUN_PUBLIC_SUPABASE_URL: supabaseUrl,
-  BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY: supabaseKey,
+  BUN_PUBLIC_VITE_SUPABASE_URL: supabaseUrl,
+  BUN_PUBLIC_VITE_SUPABASE_PUBLISHABLE_KEY: supabaseKey,
   BUN_PUBLIC_BACKEND_URL: publicEnv("BUN_PUBLIC_BACKEND_URL", "http://localhost:3000"),
 });
 indexHtml = indexHtml.replace(

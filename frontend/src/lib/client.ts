@@ -6,7 +6,7 @@ const runtimeEnv = (globalThis as typeof globalThis & {
 
 export function createClient() {
   return createBrowserClient(
-    runtimeEnv.BUN_PUBLIC_SUPABASE_URL ?? "",
-    runtimeEnv.BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? ""
+    runtimeEnv.BUN_PUBLIC_VITE_SUPABASE_URL ?? "",
+    runtimeEnv.BUN_PUBLIC_VITE_SUPABASE_PUBLISHABLE_KEY ?? ""
   )
 }

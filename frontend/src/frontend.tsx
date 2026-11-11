@@ -14,7 +14,7 @@ const runtimeEnv = (globalThis as typeof globalThis & {
   __WITTY_ENV__?: Record<string, string | undefined>;
 }).__WITTY_ENV__;
 
-if (!runtimeEnv?.BUN_PUBLIC_SUPABASE_URL || !runtimeEnv.BUN_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
+if (!runtimeEnv?.BUN_PUBLIC_VITE_SUPABASE_URL || !runtimeEnv.BUN_PUBLIC_VITE_SUPABASE_PUBLISHABLE_KEY) {
   elem.textContent = "Frontend configuration is missing. Add the Supabase variables in Vercel.";
 } else {
   const app = (
