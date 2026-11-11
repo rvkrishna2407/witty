@@ -8,6 +8,12 @@ export default function Auth() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+            if (session) {
+                navigate("/", { replace: true });
+            }
+        });
+
         async function redirectIfAuthenticated() {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
@@ -16,13 +22,17 @@ export default function Auth() {
         }
 
         redirectIfAuthenticated();
+
+        return () => {
+            subscription.subscription.unsubscribe();
+        };
     }, [navigate]);
 
     async function login(provider: "github" | "google") {
         await supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: window.location.origin,
+                redirectTo: `${window.location.origin}/auth`,
                 ...(provider === "google" ? { queryParams: { prompt: "select_account" } } : {}),
             },
         });
