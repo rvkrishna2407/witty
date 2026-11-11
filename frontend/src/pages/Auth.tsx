@@ -16,7 +16,7 @@ export default function Auth() {
         await supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: window.location.origin,
+                redirectTo: `${window.location.origin}/auth`,
                 ...(provider === "google" ? { queryParams: { prompt: "select_account" } } : {}),
             },
         });
