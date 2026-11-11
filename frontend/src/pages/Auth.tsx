@@ -1,22 +1,28 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { createClient } from "../lib/client";
 
 const supabase = createClient();
 
 export default function Auth() {
+    const navigate = useNavigate();
+
     useEffect(() => {
-        async function checkUser() {
-            await supabase.auth.signOut();
+        async function redirectIfAuthenticated() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                navigate("/", { replace: true });
+            }
         }
 
-        checkUser();
-    }, []);
+        redirectIfAuthenticated();
+    }, [navigate]);
 
     async function login(provider: "github" | "google") {
         await supabase.auth.signInWithOAuth({
             provider,
             options: {
-                redirectTo: `${window.location.origin}/auth`,
+                redirectTo: window.location.origin,
                 ...(provider === "google" ? { queryParams: { prompt: "select_account" } } : {}),
             },
         });
