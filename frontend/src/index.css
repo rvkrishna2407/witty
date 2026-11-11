@@ -631,6 +631,16 @@ button {
     transform: translateX(0);
   }
 
+  .sidebar .conversation-list {
+    overflow-y: auto;
+  }
+
+  .sidebar .account-menu {
+    flex: 0 0 auto;
+    margin-top: 12px;
+    background: #191a1e;
+  }
+
   .sidebar-backdrop {
     position: fixed;
     inset: 0;
