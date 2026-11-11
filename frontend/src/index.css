@@ -618,3 +618,84 @@ button {
     animation: none !important;
   }
 }
+
+@media (max-width: 700px) {
+  .app-shell {
+    position: relative;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    width: min(270px, 85vw);
+    transform: translateX(-100%);
+    transition: transform 180ms ease;
+  }
+
+  .sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    background: #00000080;
+    border: 0;
+  }
+
+  .chat-area {
+    width: 100%;
+    max-width: none;
+    padding: 56px 14px 18px;
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 1;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    color: #d7d9e2;
+    background: #2a2b30;
+    border: 1px solid #454750;
+    border-radius: 9px;
+  }
+
+  .welcome {
+    margin-top: 12vh;
+    text-align: center;
+  }
+
+  .welcome h1 {
+    font-size: 24px;
+  }
+
+  .composer-row {
+    gap: 6px;
+  }
+
+  .query-box select {
+    flex-basis: 76px;
+    width: 76px;
+    padding: 0 20px 0 4px;
+    font-size: 12px;
+  }
+
+  .query-box > .composer-row > button[type="submit"] {
+    padding: 9px 10px;
+  }
+
+  .user-message {
+    max-width: 90%;
+  }
+
+  .answer {
+    max-width: 100%;
+  }
+}
